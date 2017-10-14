@@ -1,0 +1,17 @@
+###############################################################
+##
+##  Profile for bash
+##
+###############################################################
+
+## source basic environment (do not remove this line)
+source "${PREFIX}/etc/basic_environment.sh"
+
+## load bashrc
+if [ "${BASH}" ]; then
+    if [[ "$-" == *"i"* ]]; then
+        if [ -r "${PREFIX}/etc/bash.bashrc" ]; then
+            . "${PREFIX}/etc/bash.bashrc"
+        fi
+    fi
+fi

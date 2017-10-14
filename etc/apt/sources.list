@@ -1,0 +1,5 @@
+# The main termux repository:
+deb [arch=all,aarch64] http://termux.net stable main
+
+# Unofficial termux repositories:
+# deb [arch=all,aarch64] https://its-pointless.github.io/files/ termux extras

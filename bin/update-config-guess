@@ -1,0 +1,33 @@
+#!/data/data/com.termux/files/usr/bin/sh
+##
+##  Update config.sub and config.guess scripts in directory
+##  with GNU source code
+##
+
+update_config_sub()
+{
+    if [ ! -z "${1}" ]; then
+        echo "Updating ${1}"
+        rm -f "${1}"
+        cp -f "${PREFIX}/share/libtool/build-aux/config.sub" "${1}"
+    fi
+}
+
+update_config_guess()
+{
+    if [ ! -z "${1}" ]; then
+        echo "Updating ${1}"
+        rm -f "${1}"
+        cp -f "${PREFIX}/share/libtool/build-aux/config.guess" "${1}"
+    fi
+}
+
+for path in . ./autoconf ./autotools ./build ./build/autoconf ./build-aux ./config; do
+    if [ -e "${path}/config.sub" ]; then
+        update_config_sub "${path}/config.sub"
+    fi
+
+    if [ -e "${path}/config.guess" ]; then
+        update_config_guess "${path}/config.guess"
+    fi
+done

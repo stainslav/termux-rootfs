@@ -1,0 +1,4 @@
+*
+!.gitignore
+!termux-rootfs.conffiles
+!termux-rootfs.list

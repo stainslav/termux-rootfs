@@ -1,0 +1,7 @@
+#!/data/data/com.termux/files/usr/bin/sh
+##
+##  Go to glibc rootfs
+##
+
+export FAKECHROOT_CWD="/root"
+exec fakechroot "${PREFIX}/opt/glibc-rootfs" bash -l

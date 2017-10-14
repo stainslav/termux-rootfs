@@ -1,0 +1,54 @@
+##############################################################################
+##
+##  Basic configuration (socks proxy only)
+##
+##############################################################################
+
+## Run tor as daemon
+RunAsDaemon 1
+
+## Listen on port 9050 and allow connections
+## from local networks
+SOCKSPort 0.0.0.0:9050
+SocksPolicy accept 10.0.0.0/8
+SocksPolicy accept 127.0.0.0/8
+SocksPolicy accept 172.16.0.0/12
+SocksPolicy accept 192.168.0.0/16
+SocksPolicy reject *
+
+## Setup resolver
+AutomapHostsOnResolve 1
+AutomapHostsSuffixes .onion,.exit
+VirtualAddrNetwork 10.192.0.0/10
+
+## Store caches and other data in this directory
+DataDirectory /data/data/com.termux/files/usr/var/lib/tor
+
+## Don't write to disk frequently
+AvoidDiskWrites 1
+
+## Limit queue/buffering memory usage
+MaxMemInQueues 1536M
+
+## Log messages to this file
+TruncateLogFile 1
+Log notice file /data/data/com.termux/files/usr/var/log/tor.log
+
+## Print heartbeat notice every hour
+HeartbeatPeriod 3600
+
+##############################################################################
+##
+##  Additional configuration
+##
+##############################################################################
+
+## Uncomment this if you want to block ads and trackers on SOCKS proxy
+#%include /data/data/com.termux/files/usr/etc/tor/addons/adblock.torrc
+
+## Uncomment this if you want to run hidden services
+## Also you need to enable needed hidden services in 'addons/hidden_services.torrc'
+#%include /data/data/com.termux/files/usr/etc/tor/addons/hidden_services.torrc
+
+## Uncomment this if you want to run a relay
+#%include /data/data/com.termux/files/usr/etc/tor/addons/relay.torrc

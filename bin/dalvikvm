@@ -1,0 +1,9 @@
+#!/data/data/com.termux/files/usr/bin/sh
+##
+##  Wrapper for /system/bin/dalvikvm
+##
+
+unset LD_LIBRARY_PATH
+exec /system/bin/dalvikvm -Djava.io.tmpdir=${TMPDIR} "$@"  \
+                          | sed '/MdfppReflectionUtils/d'; \
+                          exit ${PIPESTATUS}

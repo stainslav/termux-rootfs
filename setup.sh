@@ -1,0 +1,1 @@
+bin/termux-setup-rootfs

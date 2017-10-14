@@ -1,0 +1,11 @@
+prefix=/data/data/com.termux/files/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: poppler
+Description: PDF rendering library
+Version: 0.60.1
+
+Libs: -L${libdir} -lpoppler
+Cflags: -I${includedir}/poppler

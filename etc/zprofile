@@ -1,0 +1,11 @@
+###############################################################
+##
+##  Profile for zsh
+##
+###############################################################
+
+##
+## Set the strict file mode creation mask so
+## only user with Termux UID can access them.
+##
+umask 077

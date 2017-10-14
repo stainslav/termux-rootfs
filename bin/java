@@ -1,0 +1,6 @@
+#!/data/data/com.termux/files/usr/bin/sh
+##
+##  OpenJDK 7 Java
+##
+
+exec "${PREFIX}/opt/openjdk/bin/java" -Djava.io.tmpdir="${TMPDIR}" "${@}"
