@@ -1,4 +1,4 @@
-.TH TERMUX\-ROOTFS 1 "October 2017" "rolling\-release" "Termux RootFS"
+.TH TERMUX\-ROOTFS 1 "October 2017" "termux\-basics" "Termux RootFS"
 
 .SH NAME
 termux\-rootfs \- an advanced prefixed root file system for Termux
@@ -71,7 +71,7 @@ There a simple service manager is available. For more information see \fBservice
 To list available services you can type in terminal:
 .PP
 .RS 2
-$ service list
+$ \fBservice\fR list
 .RE
 .PP
 This command should print a list of available services with short description for each service.
@@ -79,7 +79,7 @@ This command should print a list of available services with short description fo
 Here is example of starting the \fBnginx\fR(8):
 .PP
 .RS 2
-$ service nginx start
+$ \fBservice\fR nginx start
 .br
 == Checking Nginx configuration... OK
 .br
@@ -150,6 +150,19 @@ After configuring you need to run \fBmake\fR(1):
 $ \fBmake\fR \-j4
 .RE
 .PP
+If \fBconfigure\fR script cannot guess your system type, then you should update scripts \fBconfig.sub\fR and \fBconfig.guess\fR
+by running command:
+.PP
+.RS 2
+$ \fBupdate\-config\-guess\fR
+.RE
+.PP
+If this not work, copy scripts from directory
+.PP
+.RS 2
+\fI/data/data/com.termux/files/usr/share/libtool/build-aux\fR
+.RE
+.PP
 Sometimes the configure script is missing. You can install it with command:
 .PP
 .RS 2
@@ -189,7 +202,7 @@ $ \fBpip\fR install .
 .RE
 .RE
 .PP
-\fB2.5 INSTALLING SOFTWARE\fR
+\fB2.5 INSTALLING COMPILED SOFTWARE\fR
 .RS 4
 In \fBTermux\-RootFS\fR it's recommended to install package in temporary directory and then move installed files to the
 rootfs so you can check if the installed binary may overwrite the one that already present.
@@ -206,7 +219,7 @@ $ \fBmv\fR \-i * ${PREFIX}/bin
 .RE
 .RE
 .PP
-\fB3. INSTALLING ADDITIONAL SOFTWARE WITH APT
+\fB3. INSTALLING ADDITIONAL SOFTWARE WITH APT OR DPKG\fR
 .RS 3
 It is possible to install a software from official Termux repository that is not present in
 \fBTermux\-RootFS\fR. Make sure that this software is not have collisions with \fBTermux\-RootFS\fR.
@@ -224,12 +237,128 @@ You can also install a *.deb package with \fBdpkg\fR(1):
 .RS 2
 $ \fBdpkg\fR \-i mypackage.deb
 .RE
+.RE
+.PP
+\fB4. SEARCHING FOR INSTALLED SOFTWARE\fR
+.RS 3
+Sometimes you will need to find an application that is suitable for your needs.
+.PP
+For example you want to find programs that works with *.apk files:
+.PP
+.RS 2
+$ \fBapropos\fR "apk"
+.br
+apksigner(1) - APK signing tool
+.br
+apktool(1) - disassemble Android application
+.br
+buildapk(1) - build and sign APK file
+.RE
+.PP
+Also you should check the section 'Available software' in the \fIREADME.txt\fR that should be located in the
+your \fI${PREFIX}\fR.
+
+.SH OTHER TIPS AND TRICKS
+.PP
+\fB1. PREVENTING DEVICE FROM SLEEP
+.RS 3
+This is useful for example when you are using \fISSH\fR or other network services. This will prevent Android OS
+from starting a Dose mode and will increase performance of the network connections.
+.PP
+There are several methods to do this but before perfoming these methods you should enable wakelock:
+.PP
+.RS 2
+$ \fBtermux\-wake\-lock\fR
+.RE
+.PP
+Of course, your battery charge will be drained faster.
+.PP
+\fB1.1 ALWAYS ON DISPLAY\fR
+.RS 4
+This method is simple and should always work. If you are using a modded Termux application that provided with
+\fBTermux\-RootFS\fR then you can start settings menu by long click on terminal display and enable option
+'Keep screen on'. If you are using an original Termux application, then you need to check settings of your
+Android OS.
+.RE
+.PP
+\fB1.2 NETWORK TETHERING MODE\fB
+.RS 4
+Another simple method is enabling network tethering mode via USB or Wi\-Fi. Just open your Android OS settings and click
+to enable mobile hotspot. This will prevent CPU from sleep and starting Dose mode but Wi\-Fi hotspot will drain battery
+quickly.
+.RE
+.PP
+\fB1.3 PING SESSION\fR
+.RS 4
+This method is more advanced and tested only on Android 6.0. You need to start a separate session with \fBabduco\fR(1) or
+\fBtmux\fR(1) and have \fBtermux\-wake\-lock\fR enabled.
+.PP
+Example with \fBabduco\fR(1):
+.PP
+.RS 2
+$ \fBabduco\fR -n netping ping -i 0.3 -s 0 192.168.1.1
+.RE
+.PP
+In above example every 0.3 second the ping packet will be sent to the Wi\-Fi router (with IP 192.168.1.1).
+.RE
+.RE
+.PP
+\fB2. BROWSING INTERNET ANONYMOUSLY WITH BLOCKING ADS
+.RS 3
+There is a way of turning TOR SOCKS proxy into adblock by mapping target hostnames to localhost as \fBtor\fR(1) blocks
+arbitrary connections to local addresses.
+.PP
+Example of blocking domain in \fItorrc\fR:
+.PP
+.RS 2
+MapAddress *.doubleclick.net 127.0.0.1
+.RE
+.PP
+The above line will block \fIdoubleclick.net\fR and all it's subdomains. \fBTermux\-RootFS\fR has a preconfigured
+\fItorrc\fR which blocks more than 8500 domains of ads and trackers and all subdomains of these ones.
+.PP
+To enable adblock go to directory \fI${PREFIX}/etc/tor\fR and edit file \fItorrc\fR. Find and uncomment line that includes
+file \fI${PREFIX}/etc/tor/addons/adblock.torrc\fR, then restart the \fBtor\fR(1) service if it is running.
+.RE
+
+.SH ENVIRONMENT
+.TP
+\fIPREFIX\fR
+.br
+This environment variable points to the prefixed root file system of Termux.
+
+.SH FILES
+.TP
+\fI/data/data/com.termux/files/usr/share/doc\fR
+.br
+There are located documents for various applications.
+.TP
+\fI/data/data/com.termux/files/usr/share/doc/examples\fR
+.br
+There are located examples for various applications.
+.TP
+\fI/data/data/com.termux/files/usr/share/doc/termux-rootfs/Termux.apk\fR
+.br
+The modded Termux application.
+.TP
+\fI/data/data/com.termux/files/usr/share/doc/termux-rootfs/TermuxAPI.apk\fR
+.br
+The modded Termux:API application.
+.TP
+\fI/data/data/com.termux/files/usr/share/doc/termux-rootfs/patches\fR
+.br
+In this directory located patches that was applied for various applications in \fBTermux\-RootFS\fR.
+.TP
+\fI/data/data/com.termux/files/usr/share/doc/termux-rootfs/sources\fR
+.br
+In this directory located sources for some applications in \fBTermux\-RootFS\fR and sources for
+\fBTermux.apk\fR and \fBTermuxAPI.apk\fR.
 
 .SH AUTHOR
 .PP
 This manpage and \fBtermux\-rootfs\fR are created by Leonid Plyushch <leonid.plyushch@gmail.com>.
-.br
-The programs, scripts and documentation that used in \fBtermux\-rootfs\fR are belogs to theirs developers and maintainers.
+.PP
+The programs, scripts and documentation that used in \fBtermux\-rootfs\fR are belong to theirs developers and maintainers.
 
 .SH SEE ALSO
 .BR bash (1),

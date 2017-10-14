@@ -10,6 +10,8 @@ from http://termux.net and some advanced software.
 To use this rootfs, you need to replace Termux 'usr' directory (${PREFIX})
 with these files. Then restart you Termux app, and run 'termux-setup-rootfs'.
 
+Also you should check the manual by running 'man termux-rootfs'.
+
 ###############################################################################
 ##
 ##    Requirements

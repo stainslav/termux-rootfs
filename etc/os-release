@@ -1,6 +1,5 @@
 NAME="Termux RootFS"
 PRETTY_NAME="Termux Root File System"
-VERSION="4.0"
 ID=termux-rootfs
 ID_LIKE=termux-rootfs
 ANSI_COLOR="0;36"
