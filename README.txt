@@ -37,7 +37,7 @@ For optimal experience, you need to use the following modified Termux apps:
 
 You can prevent using of termux by unwanted users by setting password with
 command 'passwd'. If you want to use a such feature, you must use a patched
-Termux app (${PREFIX}/share/doc/apks/Termux.apk) to prevent login bypassing
+Termux app (${PREFIX}/share/doc/termux-rootfs/Termux.apk) to prevent login bypassing
 with a 'failsafe' shell.
 
 To remove password login, run command 'rmlogin' or delete file 'login.pwd'
