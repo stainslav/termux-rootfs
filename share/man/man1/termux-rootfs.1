@@ -1,0 +1,238 @@
+.TH TERMUX\-ROOTFS 1 "October 2017" "rolling\-release" "Termux RootFS"
+
+.SH NAME
+termux\-rootfs \- an advanced prefixed root file system for Termux
+
+.SH DESCRIPTION
+.PP
+\fBTermux\-RootFS is an advanced prefixed root file system for \fBTermux\fR(1). It is based on regular
+packages from official Termux repository but also it has a significant differences.
+
+.SH DIFFERENCES FROM REGULAR TERMUX
+.PP
+There are several differences from regular Termux:
+.RS 2
+.IP \(bu 4
+Static root file system architecture. This means that there are not split between packages and everything
+works as monolithic system. But there is drawbacks as more complicated maintenance.
+.IP \(bu 4
+Advanced software that possibly will never been available in official Termux repository.
+.IP \(bu 4
+Some of software is preconfigured and usable 'out\-of\-box'.
+.IP \(bu 4
+There are a password login protection. So you can set a password with command \fBpasswd\fR(8) and on starting
+session you will need to enter a password.
+.RE
+
+.SH POST\-INSTALLATION
+.PP
+If you are reading this manual, then you have replaced your Termux prefix with Termux\-RootFS. But you need to do
+some post\-installation steps.
+.PP
+Firstly, make sure that there will no be problems with default shell:
+.PP
+.RS 2
+$ \fBrm\fR \-f \fI~/.termux/shell\fR
+.RE
+.PP
+Then you need to run an automatic configurator (note that it may ask your interaction):
+.PP
+.RS 2
+$ \fBtermux\-setup\-rootfs\fR
+.RE
+.PP
+After configuring, restart Termux. When you open a new session, there may be either a password prompt if you enabled
+password login protection when you run \fBtermux\-setup\-rootfs\fR, or there may be just displayed \fRmotd\fI and started
+shell.
+.PP
+You may want to use \fBzsh\fR(1) as your default shell:
+.PP
+.RS 2
+$ \fBchsh\fR \-s zsh
+.RE
+.PP
+Also there are highly recommended that you will install modded \fBTermux.apk\fR (includes Termux:Boot, Termux:Styling,
+Termux:Widget addons) and \fBTermuxAPI.apk\fR that are located in directory:
+.PP
+.RS 2
+\fI/data/data/com.termux/files/usr/share/doc/termux\-rootfs\fR
+.RE
+.PP
+Note that if you are using an original Termux applications there will be a possibility of bypassing of password login
+with a \fIfailsafe\fR shell.
+
+.SH USING TERMUX\-ROOTFS
+.PP
+\fB1. RUNNING SERVERS AND DAEMONS\fR
+.br
+.RS 3
+There a simple service manager is available. For more information see \fBservice\-manager\fR(8).
+.PP
+To list available services you can type in terminal:
+.PP
+.RS 2
+$ service list
+.RE
+.PP
+This command should print a list of available services with short description for each service.
+.PP
+Here is example of starting the \fBnginx\fR(8):
+.PP
+.RS 2
+$ service nginx start
+.br
+== Checking Nginx configuration... OK
+.br
+== Starting Nginx... OK
+.RE
+.PP
+Some services have an additional configuration files that stored in directory:
+.PP
+.RS 2
+\fI/data/data/com.termux/files/usr/etc/conf.d\fR
+.RE
+.RE
+.PP
+\fB2. COMPILING SOFTWARE FROM SOURCES\fR
+.RS 3
+There are some common formats of source code tree that are may be used in various applications. But these
+formats are designed to be used in regular operating systems (not in Termux!).
+.PP
+Before compiling software, ensure that \fBtermux\-exec\fR is enabled:
+.PP
+.RS 2
+$ \fBtermux\-exec\fR enable
+.RE
+.PP
+Or
+.PP
+.RS 2
+$ \fBexport\fR LD_PRELOAD=${PREFIX}/lib/libtermux\-exec.so
+.br
+$ \fBexec\fR ${SHELL}
+.RE
+.PP
+Also before building project you need to read notes about that project. Search for files \fIREADME\fR,
+\fIREADME.txt\fR, \fIREADME.md\fR, \fIINSTALL\fR, \fINOTES\fR or such. The information from these files may
+help you in building the software.
+.PP
+\fB2.1 BUILDING MAKEFILE BASED PROJECT\fR
+.RS 4
+If you found in source directory root a file named \fIMakefile\fR or \fIGNUmakefile\fR, then for compiling you need to
+run command:
+.PP
+.RS 2
+$ \fBmake\fR
+.RE
+.PP
+Sometimes you need to set a compiler and flags. You can specify them as \fBmake\fR arguments:
+.PP
+.RS 2
+$ \fBmake\fR CC="clang" CFLAGS="\-O3" LDFLAGS="\-lmylib"
+.RE
+.RE
+.PP
+\fB2.2 BUILDING A GNU PROJECT\fR
+.RS 4
+The most common Open Source projects (for example \fBcoreutils\fR(1)) are using a GNU build system. Before compiling you will
+need to run a configuration script. Make sure that you are enabled \fBtermux\-exec\fR or you are running under \fBtermux\-chroot\fR(1),
+if not, then you may get errors about missing files.
+.PP
+Configuring project for Termux:
+.PP
+.RS 2
+$ \fB./configure\fR \-\-prefix="${PREFIX}" CC="clang" CXX="clang++"
+.RE
+.PP
+After configuring you need to run \fBmake\fR(1):
+.PP
+.RS 2
+$ \fBmake\fR \-j4
+.RE
+.PP
+Sometimes the configure script is missing. You can install it with command:
+.PP
+.RS 2
+$ \fBautoreconf\fR \-i
+.RE
+.PP
+Also if \fIautogen.sh\fR script is present, you can use it:
+.PP
+.RS 2
+$ \fB./autogen.sh\fR
+.RE
+.RE
+.PP
+\fB2.3 BUILDING CMAKE PROJECT\fR
+.RS 4
+If you found in project root a file \fICMakeLists.txt\fR then this is a \fBcmake\fR project and you can build it
+by running command:
+.PP
+.RS 2
+$ \fBmkdir\fR build
+.br
+$ \fBcd\fR build
+.br
+$ \fBcmake\fR .. && \fBmake\fR \-j4
+.RE
+.RE
+.PP
+\fB2.4 BUILDING A PYTHON PROJECT\fR
+.RS 4
+Most of \fBpython\fR(1) projects can be installed from PyPI repository with \fBpip\fR. The \fBpip\fR can also build and
+install projects from source:
+.PP
+.RS 2
+$ \fBcd\fR src
+.br
+$ \fBpip\fR install .
+.RE
+.RE
+.PP
+\fB2.5 INSTALLING SOFTWARE\fR
+.RS 4
+In \fBTermux\-RootFS\fR it's recommended to install package in temporary directory and then move installed files to the
+rootfs so you can check if the installed binary may overwrite the one that already present.
+.PP
+Example:
+.PP
+.RS 2
+$ \fBmake\fR install DESTDIR=${HOME}/installation
+.br
+$ \fBcd\fR ${HOME}/installation/bin
+.br
+$ \fBmv\fR \-i * ${PREFIX}/bin
+.RE
+.RE
+.RE
+.PP
+\fB3. INSTALLING ADDITIONAL SOFTWARE WITH APT
+.RS 3
+It is possible to install a software from official Termux repository that is not present in
+\fBTermux\-RootFS\fR. Make sure that this software is not have collisions with \fBTermux\-RootFS\fR.
+.PP
+Example:
+.PP
+.RS 2
+$ \fBapt\fR update
+.br
+$ \fBapt\fR install php
+.RE
+.PP
+You can also install a *.deb package with \fBdpkg\fR(1):
+.PP
+.RS 2
+$ \fBdpkg\fR \-i mypackage.deb
+.RE
+
+.SH AUTHOR
+.PP
+This manpage and \fBtermux\-rootfs\fR are created by Leonid Plyushch <leonid.plyushch@gmail.com>.
+.br
+The programs, scripts and documentation that used in \fBtermux\-rootfs\fR are belogs to theirs developers and maintainers.
+
+.SH SEE ALSO
+.BR bash (1),
+.BR intro (1),
+.BR login (8),
+.BR termux (1).
