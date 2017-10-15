@@ -1,4 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
+##
+##  Test if your terminal support color output
+##
 
 awk 'BEGIN{
     s="/\\/\\/\\/\\/\\"; s=s s s s s s s s;
@@ -13,3 +16,5 @@ awk 'BEGIN{
     }
     printf "\n";
 }'
+
+echo "[@] Did you see the colors ?"

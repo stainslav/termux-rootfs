@@ -9,7 +9,7 @@ WORK_DIR=$(mktemp -d "${TMPDIR}/XXXXXXXXXX")
 
 test_exit()
 {
-    cd "${CURDIR}"
+    cd "${CUR_DIR}"
     rm -rf "${WORK_DIR}"
 }
 trap test_exit SIGHUP SIGINT SIGQUIT SIGTERM EXIT
