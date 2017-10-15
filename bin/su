@@ -7,6 +7,7 @@ SCRIPT_NAME="$(basename $0)"
 TERMUX_HOME="/data/data/com.termux/files/home"
 ROOT_HOME="/data/data/com.termux/files/root"
 GO_TO_ROOT_HOME=false
+unset LD_PRELOAD
 
 usage()
 {
