@@ -466,7 +466,7 @@ if [ "$TARGET" = "/" ]; then
 	CHROOT_CMD=""
 else
 	PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin
-	CHROOT_CMD="proot -w /home -b /dev -b /proc --link2symlink -0 -r $TARGET"
+	CHROOT_CMD="proot -w /home -b /dev -b /proc -0 -r $TARGET"
 fi
 
 if [ -z "$SHA_SIZE" ]; then
