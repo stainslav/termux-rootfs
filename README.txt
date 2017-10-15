@@ -74,8 +74,9 @@ databases:
   mariadb, postgresql, redis, sqlite3
 
 data processors:
-  bc, datamash, docx2txt, dos2unix, ed, hunspell, micro, nano, pcapfix,
-  poppler, stag, txt2man, urlview, vim (with python), xmlstarlet, xsltproc
+  base100, bc, datamash, docx2txt, dos2unix, ed, hunspell, micro, nano,
+  pcapfix, poppler, stag, txt2man, urlview, vim (with python), xmlstarlet,
+  xsltproc
 
 data rescue:
   ddrescue, extundelete, photorec, testdisk
