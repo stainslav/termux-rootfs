@@ -8,4 +8,5 @@ Various test scripts for Termux-RootFS
 * check-java.sh        - test if ECJ, DX, OpenJDK-JRE, DalvikVM are usable
 * check-libs.sh        - test if all needed shared libraries are present
 * check-rustc.sh       - test if Rust compiler is usable
+* check-su.sh          - test if superuser access is working
 * check-symlinks.sh    - test if symlinks are supported
