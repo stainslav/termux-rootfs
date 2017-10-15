@@ -186,7 +186,6 @@ EOF
 }
 
 GCC_VER=$(gcc --version | grep ^gcc | awk '{ print $3 }')
-echo
 echo "[*] Testing GCC (${GCC_VER})..."
 if test_gcc; then
     echo "[*] GCC test: PASSED"
@@ -204,4 +203,3 @@ else
     echo "[!] G++ test: FAILED"
     exit 1
 fi
-echo

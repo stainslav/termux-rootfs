@@ -186,7 +186,6 @@ EOF
 }
 
 CLANG_VER=$(clang --version | grep ^clang | awk '{ print $3 }')
-echo
 echo "[*] Testing Clang (${CLANG_VER})..."
 if test_clang; then
     echo "[*] Clang test: PASSED"
@@ -204,4 +203,3 @@ else
     echo "[!] Clang++ test: FAILED"
     exit 1
 fi
-echo
