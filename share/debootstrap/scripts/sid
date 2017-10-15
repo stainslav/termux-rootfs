@@ -177,7 +177,7 @@ echo \"Warning: Fake start-stop-daemon called, doing nothing\"" > "$TARGET/sbin/
 	echo "" > "$TARGET/usr/bin/chfn"
 	echo "" > "$TARGET/usr/bin/dpkg-statoverride"
 
-	echo "nameserver 8.8.8.8\nnameserver 8.8.4.4" > "$TARGET/etc/resolv.conf"
+	echo -e "nameserver 8.8.8.8\nnameserver 8.8.4.4" > "$TARGET/etc/resolv.conf"
 
 	setup_dselect_method apt
 
